@@ -5,7 +5,18 @@
  * the number twice.
  */
 export function bookEndList(numbers: number[]): number[] {
-    return numbers;
+    let shortnumbers: number[] = [];
+    if (numbers.length > 1) {
+        shortnumbers = numbers.filter(
+            (element, index, array) =>
+                index === 0 || index === array.length - 1,
+        );
+    } else if (numbers.length === 1) {
+        shortnumbers[0] = numbers[0];
+        shortnumbers[1] = numbers[numbers.length - 1];
+    }
+
+    return shortnumbers;
 }
 
 /**
@@ -13,7 +24,8 @@ export function bookEndList(numbers: number[]): number[] {
  * number has been tripled (multiplied by 3).
  */
 export function tripleNumbers(numbers: number[]): number[] {
-    return numbers;
+    const triplenumbers = numbers.map((num: number): number => num * 3);
+    return triplenumbers;
 }
 
 /**
@@ -21,7 +33,10 @@ export function tripleNumbers(numbers: number[]): number[] {
  * the number cannot be parsed as an integer, convert it to 0 instead.
  */
 export function stringsToIntegers(numbers: string[]): number[] {
-    return [];
+    const shiny = numbers.map((num: string): number =>
+        Number.isNaN(parseInt(num)) ? 0 : parseInt(num),
+    );
+    return shiny;
 }
 
 /**
@@ -32,7 +47,13 @@ export function stringsToIntegers(numbers: string[]): number[] {
  */
 // Remember, you can write functions as lambdas too! They work exactly the same.
 export const removeDollars = (amounts: string[]): number[] => {
-    return [];
+    const numbers: string[] = amounts.map((str: string): string =>
+        str.replace("$", ""),
+    );
+    const shiny = numbers.map((num: string): number =>
+        Number.isNaN(parseInt(num)) ? 0 : parseInt(num),
+    );
+    return shiny;
 };
 
 /**
@@ -41,7 +62,14 @@ export const removeDollars = (amounts: string[]): number[] => {
  * in question marks ("?").
  */
 export const shoutIfExclaiming = (messages: string[]): string[] => {
-    return [];
+    const newstr = messages.filter(
+        (str: string): boolean => str[str.length - 1] !== "?",
+    );
+    const newstr2 = newstr.map((str: string): string =>
+        str[str.length - 1] === "!" ? str.toUpperCase() : str,
+    );
+
+    return newstr2;
 };
 
 /**
@@ -49,7 +77,8 @@ export const shoutIfExclaiming = (messages: string[]): string[] => {
  * 4 letters long.
  */
 export function countShortWords(words: string[]): number {
-    return 0;
+    const shortwords = words.filter((str) => str.length < 4).length;
+    return shortwords;
 }
 
 /**
@@ -58,7 +87,10 @@ export function countShortWords(words: string[]): number {
  * then return true.
  */
 export function allRGB(colors: string[]): boolean {
-    return false;
+    const RGBs = colors.every(
+        (str) => str === "red" || str === "blue" || str === "green",
+    );
+    return RGBs;
 }
 
 /**
@@ -69,7 +101,14 @@ export function allRGB(colors: string[]): boolean {
  * And the array [] would become "0=0".
  */
 export function makeMath(addends: number[]): string {
-    return "";
+    if (addends.length === 0) {
+        return "0=0";
+    }
+    const sum: string = addends
+        .reduce((total: number, num: number) => total + num, 0)
+        .toString();
+    const joined = addends.join("+");
+    return sum.concat("=", joined);
 }
 
 /**
@@ -82,5 +121,31 @@ export function makeMath(addends: number[]): string {
  * And the array [1, 9, 7] would become [1, 9, 7, 17]
  */
 export function injectPositive(values: number[]): number[] {
-    return [];
+    if (values.every((num) => num > 0)) {
+        const finalval = [...values];
+        finalval.splice(
+            values.length,
+            0,
+            values.reduce((total, num) => total + num, 0),
+        );
+
+        return finalval;
+    }
+    let doadd: boolean = true;
+    const arrlength: number = values.findIndex((num) => num < 0);
+    const finalval = [...values];
+
+    finalval.splice(
+        arrlength + 1,
+        0,
+        values.reduce((total, num): number => {
+            if (doadd && num > 0) {
+                return total + num;
+            } else {
+                doadd = false;
+                return total;
+            }
+        }, 0),
+    );
+    return finalval;
 }
